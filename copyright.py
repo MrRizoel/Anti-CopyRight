@@ -42,7 +42,7 @@ async def restart_(_, e: Message):
    os.execl(sys.executable, *args)
    quit()
 
-@RiZoeL.on_message(filters.all))
+@RiZoeL.on_message(filters.all)
 async def watcher(_, message: Message):
    chat = message.chat
    
