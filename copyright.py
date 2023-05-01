@@ -10,12 +10,12 @@ from pyrogram.enums import ChatType
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-#from database import adduser, addchat
+from database import adduser, addchat
 
 API_ID = 3147700 
 API_HASH = "e660ea4d20e70a3897aa8cf3a6dc60af"
 BOT_TOKEN = "5702528336:AAGLMc4mVdmKdU34b9BCIz8EXTn2zuZwzic"
-#DEVS = []
+DEVS = []
 
 ALL_GROUPS = []
 MEDIA_GROUPS = []
@@ -32,7 +32,7 @@ async def ping(_, e: Message):
    ms = (end-start).microseconds / 1000
    await rep.edit_text(f"🤖 **PONG**: `{ms}`ᴍs")
 
-"""@RiZoeL.on_message(filters.user(Devs) & filters.command(["restart", "reboot"]))
+@RiZoeL.on_message(filters.user(Devs) & filters.command(["restart", "reboot"]))
 async def restart_(_, e: Message):
    await e.reply("**Restarting.....**")
    try:
@@ -41,7 +41,7 @@ async def restart_(_, e: Message):
       pass
    args = [sys.executable, "copyright.py"]
    os.execl(sys.executable, *args)
-   quit()"""
+   quit()
 
 @RiZoeL.on_message(filters.all)
 async def watcher(_, message: Message):
