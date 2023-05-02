@@ -61,7 +61,15 @@ async def watcher(_, message: Message):
 def AutoDelete():
     if len(MEDIA_GROUPS) == 0:
        return
+
     for i in MEDIA_GROUPS:
+       mai = await RiZoeL.get_chat_member(i, "me")
+       if mai.privileges.can_delete_messages:
+          pass
+       else:
+          RiZoeL.send_message(i, "**I Don't have DeleteMessage rights! I'm leaving...")
+          RiZoeL.leave_chat(i)
+          return GROUP_MEDIAS[i].delete()
        message_list = list(GROUP_MEDIAS[i].values())
        try:
           RiZoeL.delete_messages(i, message_list, revoke=True)
