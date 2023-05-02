@@ -13,7 +13,7 @@ from pyrogram.enums import ChatType
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-#from database import adduser, addchat
+from database import adduser, addchat
 
 API_ID = 3147700 
 API_HASH = "e660ea4d20e70a3897aa8cf3a6dc60af"
@@ -58,7 +58,7 @@ RiZoeL = Client('RiZoeL-Anti-CopyRight', api_id=API_ID, api_hash=API_HASH, bot_t
 @RiZoeL.on_message(filters.command(["ping", "speed"]))
 async def ping(_, e: Message):
    start = datetime.datetime.now()
-   #adduser(e.from_user.id)
+   adduser(e.from_user.id)
    rep = await e.reply_text("**Pong !!**")
    end = datetime.datetime.now()
    ms = (end-start).microseconds / 1000
@@ -66,6 +66,7 @@ async def ping(_, e: Message):
 
 @RiZoeL.on_message(filters.command(["help", "start"]))
 async def start_message(_, message: Message):
+   adduser(message.from_user.id)
    await message.reply(START_MESSAGE.format(message.from_user.mention), reply_markup=InlineKeyboardMarkup(BUTTON))
 
 @RiZoeL.on_message(filters.user(DEVS) & filters.command(["restart", "reboot"]))
@@ -168,6 +169,7 @@ async def watcher(_, message: Message):
             return
          MEDIA_GROUPS.append(chat.id)
       if (message.video or message.photo or message.animation or message.document):
+         adduser(message.from_user.id)
          check = GROUP_MEDIAS.get(chat.id)
          if check:
             GROUP_MEDIAS[chat.id].append(message.id)
@@ -180,6 +182,7 @@ def AutoDelete():
        return
 
     for i in MEDIA_GROUPS:
+       addchat(i)
        if i in DISABLE_CHATS:
          return
        message_list = list(GROUP_MEDIAS.get(i))
@@ -193,7 +196,7 @@ def AutoDelete():
           pass
     MEDIA_GROUPS.remove(i)
     print("clean all medias ✓")
-    print("waiting for 1 HR")
+    print("waiting for 1 hour")
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(AutoDelete, "interval", seconds=20)
