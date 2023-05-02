@@ -64,7 +64,8 @@ def AutoDelete():
     for i in MEDIA_GROUPS:
        message_list = list(GROUP_MEDIAS[i].values())
        try:
-          RiZoeL.delete_messages(i, message_list)
+          RiZoeL.delete_messages(i, message_list, revoke=True)
+          GROUP_MEDIAS[i].delete()
        except Exception:
           pass
     MEDIA_GROUPS.remove(i)
