@@ -199,7 +199,7 @@ def AutoDelete():
     print("waiting for 1 hour")
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(AutoDelete, "interval", seconds=20)
+scheduler.add_job(AutoDelete, "interval", seconds=3600)
 
 scheduler.start()
 
