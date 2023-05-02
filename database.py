@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
-DB_URL = ""
+DB_URL = "postgres://sekimelo:lb8KNMHfLOwZ2n9-_xAd4eIVcQ8F_Vnz@tiny.db.elephantsql.com/sekimelo"
 
 def start() -> scoped_session:
     engine = sqlalchemy.create_engine(DB_URL, client_encoding="utf8")
