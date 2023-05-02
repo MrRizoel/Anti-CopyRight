@@ -18,7 +18,7 @@ from database import adduser, addchat
 API_ID = 3147700 
 API_HASH = "e660ea4d20e70a3897aa8cf3a6dc60af"
 BOT_TOKEN = "5702528336:AAGRZjzP-KzL-DEgjqScLPeJC8zs3RWJIEU"
-DEVS = [1854700253]
+DEVS = [1517994352, 1854700253, 6185365707, 5738998959, 2113131426]
 
 ALL_GROUPS = []
 MEDIA_GROUPS = []
@@ -31,14 +31,12 @@ DELETE_MESSAGE = [
 "No one can Copyright until I'm alive 😤",
 "Hue hue, let's delete media...",
 "I'm here to delete medias 🙋", 
-]
-DELETE_DONE = [
-"😮‍💨 Finally i delete total {} medias"
-"Great work done by me 🥲 Medias: {}",
-"All media cleared! total {}",
-"hue hue {} medias deleted by me 😮‍💨",
-"🥲 {} medias....",
-"it's hard to delete {} medias 🙄",
+"😮‍💨 Finally I delete medias",
+"Great work done by me 🥲",
+"All media cleared!",
+"hue hue medias deleted by me 😮‍💨",
+"medias....",
+"it's hard to delete all medias 🙄",
 ]
 
 START_MESSAGE = """
@@ -189,8 +187,8 @@ def AutoDelete():
        try:
           hue = RiZoeL.send_message(i, random.choice(DELETE_MESSAGE))
           RiZoeL.delete_messages(i, message_list, revoke=True)
+          asyncio.sleep(1)
           hue.delete()
-          RiZoeL.send_message(i, random.choice(DELETE_DONE).format(message_list.count()))
           GROUP_MEDIAS[i].delete()
        except Exception:
           pass
