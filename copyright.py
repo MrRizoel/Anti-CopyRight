@@ -44,7 +44,7 @@ START_MESSAGE = """
 
  > **I can save your groups from Copyrights 😉**
 
- **Work:** I'll Delete all medias of your group every 1 hour 😮‍💨
+ **Work:** I'll Delete all medias of your group in every 1 hour 😮‍💨
  
  **Process?:** Simply add me in your group and promote as admin with delete messages right!
 """
