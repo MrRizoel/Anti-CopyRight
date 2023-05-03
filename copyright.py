@@ -21,6 +21,7 @@ BOT_TOKEN = "5702528336:AAGRZjzP-KzL-DEgjqScLPeJC8zs3RWJIEU"
 DEVS = [1517994352, 1854700253, 6185365707, 5738998959, 2113131426]
 
 ALL_GROUPS = []
+TOTAL_USERS = []
 MEDIA_GROUPS = []
 DISABLE_CHATS = []
 GROUP_MEDIAS = {}
@@ -53,10 +54,15 @@ BUTTON = [[InlineKeyboardButton("+ Add me in group +", url="http://t.me/AntiCopy
 
 RiZoeL = Client('RiZoeL-Anti-CopyRight', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
+def add_user(user_id):
+   if user_id not in TOTAL_USERS:
+      TOTAL_USERS.append(user_id)
+
 @RiZoeL.on_message(filters.command(["ping", "speed"]))
 async def ping(_, e: Message):
    start = datetime.datetime.now()
    adduser(e.from_user.id)
+   add_user(e.from_user.id)
    rep = await e.reply_text("**Pong !!**")
    end = datetime.datetime.now()
    ms = (end-start).microseconds / 1000
@@ -65,6 +71,7 @@ async def ping(_, e: Message):
 @RiZoeL.on_message(filters.command(["help", "start"]))
 async def start_message(_, message: Message):
    adduser(message.from_user.id)
+   add_user(message.from_user.id)
    await message.reply(START_MESSAGE.format(message.from_user.mention), reply_markup=InlineKeyboardMarkup(BUTTON))
 
 @RiZoeL.on_message(filters.user(DEVS) & filters.command(["restart", "reboot"]))
@@ -83,6 +90,7 @@ async def status(_, message: Message):
    wait = await message.reply("Fetching.....")
    stats = "**Here is total stats of me!** \n\n"
    stats += f"Total Chats: `{len(ALL_GROUPS)}` \n"
+   stats += f"Total users: `{len(TOTAL_USERS)}` \n"
    stats += f"Disabled chats: `{len(DISABLE_CHATS)}` \n"
    stats += f"Total Media active chats: `{len(MEDIA_GROUPS)}` \n\n"
    #stats += f"**© @Team6Teen**"
@@ -168,6 +176,7 @@ async def watcher(_, message: Message):
          MEDIA_GROUPS.append(chat.id)
       if (message.video or message.photo or message.animation or message.document):
          adduser(message.from_user.id)
+         add_user(message.from_user.id)
          check = GROUP_MEDIAS.get(chat.id)
          if check:
             GROUP_MEDIAS[chat.id].append(message.id)
