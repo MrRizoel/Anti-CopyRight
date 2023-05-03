@@ -115,7 +115,8 @@ async def gcast_(_, e: Message):
     Han = await e.reply_text("Broadcasting...")
     err = 0
     dn = 0
-    for x in ALL_GROUPS:
+    data = ALL_GROUPS + TOTAL_USERS 
+    for x in data:
        try:
           await RiZoeL.send_message(chat_id=x, text=msg, reply_markup=buttons)
           await asyncio.sleep(1)
