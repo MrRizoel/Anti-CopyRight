@@ -55,13 +55,13 @@ BUTTON = [[InlineKeyboardButton("+ Add me in group +", url="http://t.me/AntiCopy
 RiZoeL = Client('RiZoeL-Anti-CopyRight', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 def add_user(user_id):
+   adduser(user_id)
    if user_id not in TOTAL_USERS:
       TOTAL_USERS.append(user_id)
 
 @RiZoeL.on_message(filters.command(["ping", "speed"]))
 async def ping(_, e: Message):
    start = datetime.datetime.now()
-   adduser(e.from_user.id)
    add_user(e.from_user.id)
    rep = await e.reply_text("**Pong !!**")
    end = datetime.datetime.now()
@@ -70,7 +70,6 @@ async def ping(_, e: Message):
 
 @RiZoeL.on_message(filters.command(["help", "start"]))
 async def start_message(_, message: Message):
-   adduser(message.from_user.id)
    add_user(message.from_user.id)
    await message.reply(START_MESSAGE.format(message.from_user.mention), reply_markup=InlineKeyboardMarkup(BUTTON))
 
@@ -93,7 +92,7 @@ async def status(_, message: Message):
    stats += f"Total users: `{len(TOTAL_USERS)}` \n"
    stats += f"Disabled chats: `{len(DISABLE_CHATS)}` \n"
    stats += f"Total Media active chats: `{len(MEDIA_GROUPS)}` \n\n"
-   #stats += f"**© @Team6Teen**"
+   stats += f"**© @Team6Teen**"
    await wait.edit_text(stats)
 
 @RiZoeL.on_message(filters.user(DEVS) & filters.command(["broadcast", "gcast"]))
@@ -115,7 +114,7 @@ async def gcast_(_, e: Message):
     Han = await e.reply_text("Broadcasting...")
     err = 0
     dn = 0
-    data = ALL_GROUPS + TOTAL_USERS 
+    data = [ALL_GROUPS + TOTAL_USERS]
     for x in data:
        try:
           await RiZoeL.send_message(chat_id=x, text=msg, reply_markup=buttons)
@@ -167,6 +166,7 @@ async def watcher(_, message: Message):
    chat = message.chat
    if chat.type == ChatType.GROUP or chat.type == ChatType.SUPERGROUP:
       
+      add_user(message.from_user.id)
       if chat.id not in ALL_GROUPS:
          ALL_GROUPS.append(chat.id)
       if chat.id in DISABLE_CHATS:
@@ -176,8 +176,6 @@ async def watcher(_, message: Message):
             return
          MEDIA_GROUPS.append(chat.id)
       if (message.video or message.photo or message.animation or message.document):
-         adduser(message.from_user.id)
-         add_user(message.from_user.id)
          check = GROUP_MEDIAS.get(chat.id)
          if check:
             GROUP_MEDIAS[chat.id].append(message.id)
