@@ -139,9 +139,9 @@ async def enable_disable(_, message: Message):
       return
    if txt:
       member = await RiZoeL.get_chat_member(chat.id, message.from_user.id)
-      if not member.status == ChatMemberStatus.OWNER or message.from_user.id not in DEVS:
+      if member.status != ChatMemberStatus.OWNER or member.user.id not in DEVS:
          await message.reply("Only chat Owner can enable or disable anti-copyright!")
-         return
+         return 
       if re.search("on|yes|enable".lower(), txt.lower()):
          if chat.id in DISABLE_CHATS:
             await message.reply(f"Enabled anti-copyright! for {chat.title}")
