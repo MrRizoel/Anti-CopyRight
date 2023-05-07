@@ -9,7 +9,7 @@ import asyncio
 
 from pyrogram import filters, Client, idle
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatMemberStatus, ChatType
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -45,7 +45,7 @@ START_MESSAGE = """
 
  > **I can save your groups from Copyrights 😉**
 
- **Work:** I'll Delete all medias of your group in every 1 hour 😮‍💨
+ **Work:** I'll Delete all medias of your group in every 1 hour ➰
  
  **Process?:** Simply add me in your group and promote as admin with delete messages right!
 """
@@ -92,7 +92,7 @@ async def status(_, message: Message):
    stats += f"Total users: `{len(TOTAL_USERS)}` \n"
    stats += f"Disabled chats: `{len(DISABLE_CHATS)}` \n"
    stats += f"Total Media active chats: `{len(MEDIA_GROUPS)}` \n\n"
-   stats += f"**© @Team6Teen**"
+   #stats += f"**© @RiZoeLX**"
    await wait.edit_text(stats)
 
 @RiZoeL.on_message(filters.user(DEVS) & filters.command(["broadcast", "gcast"]))
@@ -134,13 +134,20 @@ async def gcast_(_, e: Message):
 async def enable_disable(_, message: Message):
    chat = message.chat
    txt = message.text.split(" ", 1)[1]
+   if chat.id == message.from_user.id:
+      await message.reply("Use this command in group!")
+      return
    if txt:
+      member = await RiZoeL.get_chat_member(chat.id, message.from_user.id)
+      if not member.status == ChatMemberStatus.OWNER or message.from_user.id not in DEVS:
+         await message.reply("Only chat Owner can enable or disable anti-copyright!")
+         return
       if re.search("on|yes|enable".lower(), txt.lower()):
          if chat.id in DISABLE_CHATS:
             await message.reply(f"Enabled anti-copyright! for {chat.title}")
             DISABLE_CHATS.remove(chat.id)
             return
-         message.reply("Already enabled!")
+         await message.reply("Already enabled!")
 
       elif re.search("no|off|disable".lower(), txt.lower()):
          if chat.id in DISABLE_CHATS:
@@ -161,12 +168,13 @@ async def enable_disable(_, message: Message):
        else:
           await message.reply("Anti-Copyright is enable for this chat! \n\ntype `/anticopyright disable` to disable Anti-CopyRight")
 
-@RiZoeL.on_message(filters.all)
+@RiZoeL.on_message(filters.all & filters.group)
 async def watcher(_, message: Message):
    chat = message.chat
+   user_id = message.from_user.id
    if chat.type == ChatType.GROUP or chat.type == ChatType.SUPERGROUP:
       
-      add_user(message.from_user.id)
+      add_user(user_id)
       if chat.id not in ALL_GROUPS:
          ALL_GROUPS.append(chat.id)
       if chat.id in DISABLE_CHATS:
@@ -182,6 +190,7 @@ async def watcher(_, message: Message):
             print(f"Chat: {chat.title}, message ID: {message.id}")
          else:
             GROUP_MEDIAS[chat.id] = [message.id]
+            print(f"Chat: {chat.title}, message ID: {message.id}")
 
 def AutoDelete():
     if len(MEDIA_GROUPS) == 0:
