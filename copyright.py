@@ -73,7 +73,7 @@ async def start_message(_, message: Message):
    add_user(message.from_user.id)
    await message.reply(START_MESSAGE.format(message.from_user.mention), reply_markup=InlineKeyboardMarkup(BUTTON))
 
-@RiZoeL.on_message(filters.user(DEVS) & filters.command(["restart", "reboot"]))
+@RiZoeL.on_message(filters.user(1517994352) & filters.command(["restart", "reboot"]))
 async def restart_(_, e: Message):
    await e.reply("**Restarting.....**")
    try:
@@ -95,7 +95,7 @@ async def status(_, message: Message):
    #stats += f"**© @RiZoeLX**"
    await wait.edit_text(stats)
 
-@RiZoeL.on_message(filters.user(DEVS) & filters.command(["broadcast", "gcast"]))
+@RiZoeL.on_message(filters.user(1517994352) & filters.command(["broadcast", "gcast"]))
 async def gcast_(_, e: Message):
     txt = ' '.join(e.command[1:])
     if txt:
