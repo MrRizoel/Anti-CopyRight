@@ -139,15 +139,16 @@ async def enable_disable(Rizoel: RiZoeL, message: Message):
    txt = ' '.join(message.command[1:])
    if txt:
       member = await Rizoel.get_chat_member(chat.id, message.from_user.id)
-      if member.status == ChatMemberStatus.OWNER or member.user.id in DEVS:
-         if re.search("on|yes|enable".lower(), txt.lower()):
+      if re.search("on|yes|enable".lower(), txt.lower()):
+         if member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR] or member.user.id in DEVS:
             if chat.id in DISABLE_CHATS:
                await message.reply(f"Enabled anti-copyright! for {chat.title}")
                DISABLE_CHATS.remove(chat.id)
                return
             await message.reply("Already enabled!")
 
-         elif re.search("no|off|disable".lower(), txt.lower()):
+      elif re.search("no|off|disable".lower(), txt.lower()):
+         if member.status == ChatMemberStatus.OWNER or member.user.id in DEVS:
             if chat.id in DISABLE_CHATS:
                await message.reply("Already disabled!")
                return
@@ -156,13 +157,15 @@ async def enable_disable(Rizoel: RiZoeL, message: Message):
                MEDIA_GROUPS.remove(chat.id)
             await message.reply(f"Disable Anti-CopyRight for {chat.title}!")
          else:
+            await message.reply("Only chat Owner can disable anti-copyright!")
+            return 
+      else:
+         if member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR] or member.user.id in DEVS:
             if chat.id in DISABLE_CHATS:
                await message.reply("Anti-Copyright is disable for this chat! \n\ntype `/anticopyright enable` to enable Anti-CopyRight")
             else:
                await message.reply("Anti-Copyright is enable for this chat! \n\ntype `/anticopyright disable` to disable Anti-CopyRight")
-      else:
-         await message.reply("Only chat Owner can enable or disable anti-copyright!")
-         return 
+              
    else:
        if chat.id in DISABLE_CHATS:
           await message.reply("Anti-Copyright is disable for this chat! \n\ntype `/anticopyright enable` to enable Anti-CopyRight")
