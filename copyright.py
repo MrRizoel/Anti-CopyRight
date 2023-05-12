@@ -175,7 +175,7 @@ async def watcher(_, message: Message):
    user_id = message.from_user.id
    if chat.type == ChatType.GROUP or chat.type == ChatType.SUPERGROUP:
       
-      add_user(user_id)
+
       if chat.id not in ALL_GROUPS:
          ALL_GROUPS.append(chat.id)
       if chat.id in DISABLE_CHATS:
@@ -185,6 +185,7 @@ async def watcher(_, message: Message):
             return
          MEDIA_GROUPS.append(chat.id)
       if (message.video or message.photo or message.animation or message.document):
+         add_user(user_id)
          check = GROUP_MEDIAS.get(chat.id)
          if check:
             GROUP_MEDIAS[chat.id].append(message.id)
