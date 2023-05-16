@@ -15,10 +15,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from database import adduser, addchat
 
-API_ID = 3147700 
-API_HASH = "e660ea4d20e70a3897aa8cf3a6dc60af"
-BOT_TOKEN = "5702528336:AAGRZjzP-KzL-DEgjqScLPeJC8zs3RWJIEU"
-DEVS = [1517994352, 1854700253, 6185365707, 5738998959, 2113131426]
+API_ID = 6 
+API_HASH = "Abcdefg1234"
+BOT_TOKEN = ""
+DEVS = [1517994352, 1854700253]
 
 ALL_GROUPS = []
 TOTAL_USERS = []
@@ -73,7 +73,7 @@ async def start_message(_, message: Message):
    add_user(message.from_user.id)
    await message.reply(START_MESSAGE.format(message.from_user.mention), reply_markup=InlineKeyboardMarkup(BUTTON))
 
-@RiZoeL.on_message(filters.user(1517994352) & filters.command(["restart", "reboot"]))
+@RiZoeL.on_message(filters.user(DEVS) & filters.command(["restart", "reboot"]))
 async def restart_(_, e: Message):
    await e.reply("**Restarting.....**")
    try:
@@ -95,39 +95,6 @@ async def status(_, message: Message):
    #stats += f"**© @RiZoeLX**"
    await wait.edit_text(stats)
 
-@RiZoeL.on_message(filters.user(1517994352) & filters.command(["broadcast", "gcast"]))
-async def gcast_(_, e: Message):
-    txt = ' '.join(e.command[1:])
-    if txt:
-        msg = str(txt)
-        buttons = None
-    elif e.reply_to_message:
-        msg = e.reply_to_message.text.markdown
-        if e.reply_to_message.reply_markup:
-           buttons = e.reply_to_message.reply_markup
-        else:
-           buttons = None
-    else:
-        await e.reply_text("Give Message for Broadcast or reply to any msg")
-        return
-
-    Han = await e.reply_text("Broadcasting...")
-    err = 0
-    dn = 0
-    data = [ALL_GROUPS + TOTAL_USERS]
-    for x in data:
-       try:
-          await RiZoeL.send_message(chat_id=x, text=msg, reply_markup=buttons)
-          await asyncio.sleep(1)
-          dn += 1
-       except Exception as a:
-          print(a)
-          err += 1
-    try:
-       await Han.edit_text(f"Broadcast Done ✓ \n\n Success chats: {dn} \n Failed chats: {err}")
-    except:
-       await Han.delete()
-       await e.reply_text(f"Broadcast Done ✓ \n\n Success chats: {dn} \n Failed chats: {err}")
 
    
 @RiZoeL.on_message(filters.command(["anticopyright", "copyright"]))
