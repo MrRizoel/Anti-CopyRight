@@ -13,7 +13,6 @@ from pyrogram.enums import ChatMemberStatus, ChatType
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from database import adduser, addchat
 
 API_ID = 6 
 API_HASH = "Abcdefg1234"
@@ -55,7 +54,6 @@ BUTTON = [[InlineKeyboardButton("+ Add me in group +", url="http://t.me/AntiCopy
 RiZoeL = Client('RiZoeL-Anti-CopyRight', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 def add_user(user_id):
-   adduser(user_id)
    if user_id not in TOTAL_USERS:
       TOTAL_USERS.append(user_id)
 
@@ -155,7 +153,6 @@ async def watcher(_, message: Message):
             return
          MEDIA_GROUPS.append(chat.id)
       if (message.video or message.photo or message.animation or message.document):
-         add_user(user_id)
          check = GROUP_MEDIAS.get(chat.id)
          if check:
             GROUP_MEDIAS[chat.id].append(message.id)
@@ -175,7 +172,7 @@ def AutoDelete():
        message_list = list(GROUP_MEDIAS.get(i))
        try:
           hue = RiZoeL.send_message(i, random.choice(DELETE_MESSAGE))
-          RiZoeL.delete_messages(i, message_list, revoke=True)
+          RiZoeL.delete_messages(i, message_list)
           asyncio.sleep(1)
           hue.delete()
           GROUP_MEDIAS[i].delete()
